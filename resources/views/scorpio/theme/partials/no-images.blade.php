@@ -1,0 +1,1 @@
+                                <li class="text-danger">No images found</li>
