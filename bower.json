@@ -13,6 +13,7 @@
     "tests"
   ],
   "dependencies": {
-    "summernote": "^0.8.1"
+    "summernote": "summernote#feature/bootstrap4",
+    "tether": "^1.3.3"
   }
 }

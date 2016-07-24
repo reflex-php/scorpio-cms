@@ -12,13 +12,22 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.less('app.less')
+    mix.sass('app.scss')
         .scripts([
             '../bower/jquery/dist/jquery.js',
-            '../bower/summernote/dist/summernote.js',
+            '../bower/summernote/dist/bs4/summernote.js',
+            '../bower/tether/dist/js/tether.js',
             '../bower/bootstrap/dist/js/bootstrap.js',
-            '../bower/js-cookie/src/js.cookie.js'
+            '../bower/js-cookie/src/js.cookie.js',
         ], 'public/js/vendor.js')
-        .styles(['../bower/summernote/dist/summernote.css'], 'public/css/vendor.css')
-       .copy('resources/assets/bower/summernote/dist/font', 'public/css/font');
+        .styles([
+            '../bower/summernote/dist/bs4/summernote.css',
+            '../bower/tether/dist/css/tether.css'
+        ], 'public/css/vendor.css')
+        .copy('resources/assets/bower/summernote/dist/font', 'public/font')
+        .copy('resources/assets/bower/font-awesome/fonts', 'public/css/font')
+        .browserSync({
+            proxy: 'scorpio-cms.dev',
+            notify: false
+        });
 });

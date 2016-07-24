@@ -6,6 +6,11 @@ use Reflex\Scorpio\Theme;
 
 Route::group(['prefix' => 'scorpio', 'middleware' => 'auth'], function () {
     Route::resource('page', PageController::class);
+    Route::get('page/{page}/deactivate', 'PageController@deactivate');
+    Route::get('page/{page}/activate', 'PageController@activate');
+    Route::get('page/{page}/up', 'PageController@up')->name('scorpio.page.up');
+    Route::get('page/{page}/down', 'PageController@down')->name('scorpio.page.down');
+
     Route::resource('theme', ThemeController::class);
     Route::get('theme/{theme}/apply', 'ThemeController@apply')
         ->name('scorpio.theme.apply');
@@ -16,14 +21,16 @@ Route::group(['prefix' => 'scorpio', 'middleware' => 'auth'], function () {
     Route::delete('theme/{theme}/resource/{type}', 'ThemeController@deleteResource')
         ->name('scorpio.theme.remove');
 
-    Route::resource('navigation', NavigationController::class);
-
     Route::get('dashboard', ['as' => 'scorpio.home', 'uses' => function () {
         $pages = Page::latestFiveUpdated();
         $users = User::latestFive();
         $themes = Theme::latestTen();
         return view('scorpio.layouts.admin', compact('pages', 'users', 'themes'));
     }]);
+
+    Route::get('/{uncaught}', function ($uri) {
+        return response(view('scorpio.content.page-not-found', compact('uri')), 404);
+    })->where('uncaught', '(.*)');
 });
 
 Route::get('/theme-assets/{themeByDirectory}/{filename?}', 'AssetController@show')
@@ -33,5 +40,4 @@ Route::get('/theme-assets/{themeByDirectory}/{filename?}', 'AssetController@show
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
-
-Route::get('/{pageBySlug}', 'DisplayController@show');
+Route::get('/', 'HomeController@index');

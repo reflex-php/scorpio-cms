@@ -25,7 +25,10 @@
                 {!! BootForm::close() !!}
                 <hr>
                 <div class="alert alert-info alert-important">You will be able to manage theme assets once you've created the initial
-                    theme!</div>
+                    theme!
+                    <br>
+                    Once created, the CMS will copy the default template and structure into a directory with the slugified version of the theme name, so 'Theme Name' becomes 'theme-name', and therefor 'theme-name' becomes the path in which assets will be stored.
+                </div>
             </div>
         </div>
     </div>

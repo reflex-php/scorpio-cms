@@ -5,29 +5,35 @@ namespace Reflex\Scorpio\Http\Controllers;
 use Reflex\Scorpio\Page;
 use Reflex\Scorpio\Theme;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Router;
 use Reflex\Scorpio\Http\Requests;
+use Baum\MoveNotPossibleException;
 use Reflex\Scorpio\Http\Requests\PageRequest;
 
 class PageController extends Controller
 {
+    protected $pages;
+
+    public function __construct()
+    {
+        $this->pages = Page::withDepth()->defaultOrder()->get();
+
+        view()->share('pages', $this->pages);
+        view()->share('page_hierarchy', $this->pages->toTree());
+    }
+
     public function index()
     {
-        $pages = Page::latest('updated_at')->get();
-
-        return view('scorpio.page.index', compact('pages'));
+        return view('scorpio.page.index');
     }
 
     public function store(PageRequest $request)
     {
-        if (! $request->slug) {
-            $request->slug = str_slug($request->title);
-        }
-
-        $page = Page::create($request->all());
-
+        $page = $request->persist();
+        
         flash()->success('Awesome! New article created!');
 
-        return redirect(route('scorpio.page.edit', [$page->id]));
+        return redirect()->route('scorpio.page.edit', [$page->id]);
     }
 
     public function create()
@@ -36,12 +42,19 @@ class PageController extends Controller
         return view('scorpio.page.create', compact('themes'));
     }
 
+    public function show(Page $page)
+    {
+        return redirect()->route('scorpio.page.edit', $page->id);
+    }
+
     public function destroy(Page $page)
     {
+        foreach ($page->children as $child) {
+            $child->makeRoot();
+        }
+
         $page->delete();
-
         flash()->success('Okay, page deleted!');
-
         return back();
     }
 
@@ -53,8 +66,75 @@ class PageController extends Controller
 
     public function update(PageRequest $request, Page $page)
     {
-        $page->update($request->all());
-        flash()->success('Awesome! Updated!');
+        try {
+            $page = $request->persist($page);
+            flash()->success('Awesome! Updated!');
+        } catch (MoveNotPossibleException $e) {
+            flash()->warning('Cannot make a page a child of itself');
+        }
+        
+        return back();
+    }
+
+    public function activate(Page $page)
+    {
+        $page->activate();
+        flash()->success('Page activated!');
+        return back();
+    }
+
+    public function deactivate(Page $page)
+    {
+        $page->deactivate();
+        flash()->warning('Page deactivated!');
+        return back();
+    }
+
+    public function up(Page $page)
+    {
+        $sibling = $page->getPrevSibling();
+        
+        if ($page->isRoot() && $sibling) {
+            $sibling->prependNode($page);
+            flash()->success('Page \'' . $page->title . '\'  moved and is now part of \'' . $sibling->title . '\'');
+            return back();
+        }
+
+        if (! $page->isRoot() && $sibling) {
+            $page->up();
+            flash()->success('Page \'' . $page->title . '\' moved up in tree');
+            return back();
+        } elseif ($parent = $page->parent) {
+            $page->insertBeforeNode($parent);
+            flash()->success('Page \'' . $page->title . '\' has now been made a root element');
+            return back();
+        }
+
+        flash()->warning('No movement possible for  \'' . $page->title . '\'');
+        return back();
+    }
+
+    public function down(Page $page)
+    {
+        $sibling = $page->getNextSibling();
+        
+        if ($page->isRoot() && $sibling) {
+            $sibling->prependNode($page);
+            flash()->success('Page \'' . $page->title . '\'  moved and is now part of \'' . $sibling->title . '\'');
+            return back();
+        }
+
+        if (! $page->isRoot() && $sibling) {
+            $page->down();
+            flash()->success('Page \'' . $page->title . '\' moved down in tree');
+            return back();
+        } elseif ($parent = $page->parent) {
+            $page->insertAfterNode($parent);
+            flash()->success('Page \'' . $page->title . '\' has now been made a root element');
+            return back();
+        }
+
+        flash()->warning('No movement possible for  \'' . $page->title . '\'');
         return back();
     }
 }

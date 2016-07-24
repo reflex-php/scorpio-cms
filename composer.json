@@ -8,7 +8,8 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "adamwathan/bootforms": "^0.8.1",
-        "laracasts/flash": "^2.0"
+        "laracasts/flash": "^2.0",
+        "kalnoy/nestedset": "^4.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -23,7 +24,10 @@
         ],
         "psr-4": {
             "Reflex\\Scorpio\\": "app/"
-        }
+        },
+        "files": [
+            "app/helpers.php"
+        ]
     },
     "autoload-dev": {
         "classmap": [

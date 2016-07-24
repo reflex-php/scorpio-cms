@@ -30,12 +30,6 @@
             </a>
         </li>
         <li>
-            <a href="{{ route('scorpio.navigation.index') }}">
-                <i class="fa fa-bars"></i>
-                Navigation Management
-            </a>
-        </li>
-        <li>
             <a href="{{ url('/scorpio/users') }}">
                 <i class="fa fa-users"></i>
                 User Management

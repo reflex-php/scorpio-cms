@@ -1,0 +1,64 @@
+$fa-font-path: "./font";
+@import "../bower/bootstrap/scss/bootstrap";
+@import "../bower/font-awesome/scss/font-awesome.scss";
+
+
+.dropdown:hover > .dropdown-menu {
+    display: block;
+    top: relative;
+    background-color: rgba(255, 255, 255, 0.3);
+    width: inherit;
+    border: none;
+}
+
+.dropdown:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.dropdown-submenu {
+    position: relative;
+
+    .dropdown-menu {
+        top: -8px;
+        left: 100%;
+    }
+
+    &:hover > .dropdown-menu {
+        display: block;
+    }
+}
+
+nav > div > ul > li.nav-item.dropdown > ul {
+    min-width: 0 !important;
+    margin-top: 0px;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+}
+
+nav > div > ul > li.nav-item.dropdown > a {
+    border: 1px solid transparent;
+}
+
+nav > div > ul > li.nav-item.active {
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+nav > div > ul > li.nav-item.dropdown > ul > li > a {
+    color: #000;
+    font-size: 0.7em;
+    padding: 0;
+
+    &:hover {
+        color: white;
+    }
+}
+
+nav > div > ul > li.nav-item.dropdown > ul > li {
+    float: none;
+    margin: 0 1em 0.1em 1em;
+    padding: 0;
+}

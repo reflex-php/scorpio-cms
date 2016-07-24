@@ -2,6 +2,8 @@
 
 namespace Reflex\Scorpio\Http\Requests;
 
+use Reflex\Scorpio\Page;
+use Baum\MoveNotPossibleException;
 use Reflex\Scorpio\Http\Requests\Request;
 
 class PageRequest extends Request
@@ -16,21 +18,6 @@ class PageRequest extends Request
         return true;
     }
 
-    public function all()
-    {
-        $all = parent::all();
-
-        if (isset($all['slug']) && strlen($all['slug'])) {
-            $all['slug'] = str_slug($all['slug']);
-        } else {
-            $all['slug'] = isset($all['title']) && strlen($all['title'])
-                ? str_slug($all['title'])
-                : '';
-        }
-
-        return $all;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -40,19 +27,48 @@ class PageRequest extends Request
     {
         if ($page = $this->route()->getParameter('page')) {
             $id = $page->id;
+            
             return [
-                'title' => 'required',
-                'slug'  => 'unique:pages,id,' . $id,
-                'body'  => 'required',
-                'active'=> 'boolean',
+                'title'      => 'required',
+                'uri'        => 'unique:pages,id,' . $id,
+                'body'       => 'required',
+                'active'     => 'boolean',
+                'order'      => 'in:,before,after,childOf',
+                'order_page' => 'exists:pages,id,active,1',
             ];
         }
 
         return [
-            'title' => 'required',
-            'slug'  => 'unique:pages',
-            'body'  => 'required',
-            'active'=> 'boolean',
+            'title'      => 'required',
+            'uri'        => 'unique:pages',
+            'body'       => 'required',
+            'active'     => 'boolean',
+            'order'      => 'in:,before,after,childOf',
+            'order_page' => 'exists:pages,id,active,1',
         ];
+    }
+
+    protected function updatePageOrder(Page $page)
+    {
+        if (! $this->has('order', 'order_page')) {
+            return true;
+        }
+
+        $page->updateOrder($this->order, $this->order_page);
+
+        return true;
+    }
+
+    public function persist(Page $page = null)
+    {
+        if (!! $page && $page->exists) {
+            $page->update($this->all());
+        } else {
+            $page = Page::create($this->all());
+        }
+
+        $this->updatePageOrder($page);
+
+        return $page;
     }
 }

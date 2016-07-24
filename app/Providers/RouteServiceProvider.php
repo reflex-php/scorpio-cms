@@ -5,6 +5,7 @@ namespace Reflex\Scorpio\Providers;
 use Reflex\Scorpio\Page;
 use Reflex\Scorpio\Theme;
 use Illuminate\Routing\Router;
+use Reflex\Scorpio\Http\Controllers\DisplayController;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
@@ -29,12 +30,27 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot($router);
 
         $router->bind('pageBySlug', function ($value) {
-            return Page::whereSlug($value)->first();
+            if ($page = Page::whereSlug($value)->first()) {
+                return $page;
+            }
+
+            return redirect('/');
         });
 
         $router->bind('themeByDirectory', function ($value) {
             return Theme::wherePath($value)->first();
         });
+
+        if (! app()->runningInConsole()) {
+            foreach (Page::all() as $page) {
+                $router->get($page->uri, ['as' => $page->route_name, function () use ($page, $router) {
+                    return $this->app->call('Reflex\Scorpio\Http\Controllers\DisplayController@show', [
+                        'page' => $page,
+                        'parameters' => $router->current()->parameters(),
+                    ]);
+                }]);
+            }
+        }
     }
 
     /**

@@ -2,15 +2,15 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h1>Recent Pages</h1>
-                            <div class="panel panel-default">
-                                <div class="panel-body">
+                            <div class="card">
+                                <div class="card-block">
                                     <ul class="list-unstyled">
                                     @forelse($pages as $page)
                                         <li>
                                             {!! BootForm::open()->delete()->action(route('scorpio.page.destroy', [$page->id]))->addClass('form-inline') !!}
                                                 {{ $page->title }}
                                                 <div class="btn-group">
-                                                    <a href="{{ url($page->slug) }}" class="btn btn-link" target="_blank">
+                                                    <a href="{{ url($page->uri) }}" class="btn btn-link" target="_blank">
                                                         <i class="fa fa-search"></i>
                                                     </a>
                                                     <a href="{{ route('scorpio.page.edit', [$page->id]) }}" class="btn btn-link">
@@ -25,12 +25,12 @@
                                     @endforelse
                                     </ul>
                                 </div>
-                                <div class="panel-footer">
+                                <div class="card-footer">
                                     <ul class="list-inline">
-                                        <li>
+                                        <li class="list-inline-item">
                                             <a href="{{ route('scorpio.page.index') }}">All Pages</a>
                                         </li>
-                                        <li>
+                                        <li class="list-inline-item">
                                             <a href="{{ route('scorpio.page.create') }}"><i class="fa fa-plus"></i> New Page</a>
                                         </li>
                                     </ul>
@@ -39,8 +39,8 @@
                         </div>
                         <div class="col-md-6">
                             <h1>Recent Users</h1>
-                            <div class="panel panel-default">
-                                <div class="panel-body">
+                            <div class="card">
+                                <div class="card-block">
                                     <ul class="list-unstyled">
                                     @forelse($users as $user)
                                         <li>
@@ -62,12 +62,12 @@
                                     @endforelse
                                     </ul>
                                 </div>
-                                <div class="panel-footer">
+                                <div class="card-footer">
                                     <ul class="list-inline">
-                                        <li>
+                                        <li class="list-inline-item">
                                             <a href="{{ route('scorpio.page.index') }}">All Users</a>
                                         </li>
-                                        <li>
+                                        <li class="list-inline-item">
                                             <a href="{{ route('scorpio.page.create') }}">
                                                 <i class="fa fa-plus"></i> New User
                                             </a>
@@ -82,8 +82,8 @@
                             <h1>
                                 Themes
                             </h1>
-                            <div class="panel panel-default">
-                                <div class="panel-body">
+                            <div class="card">
+                                <div class="card-block">
                                     <ul class="list-unstyled">
                                         @forelse($themes as $theme)
                                             {!! BootForm::open()->delete()->action(route('scorpio.theme.destroy', [$theme->id]))->addClass('form-inline') !!}
@@ -100,13 +100,13 @@
                                         @endforelse
                                     </ul>
                                 </div>
-                                <div class="panel-footer">
+                                <div class="card-footer">
                                     <ul class="list-inline">
-                                        <li>
+                                        <li class="list-inline-item">
                                             <a href="{{ route('scorpio.theme.index') }}">All Themes</a>
                                         </li>
-                                        <li>
-                                            <a href="{{ route('scorpio.page.create') }}">
+                                        <li class="list-inline-item">
+                                            <a href="{{ route('scorpio.theme.create') }}">
                                                 <i class="fa fa-plus"></i> New Theme
                                             </a>
                                         </li>

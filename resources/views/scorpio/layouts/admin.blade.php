@@ -20,7 +20,6 @@
     <link href="/css/vendor.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
     <link href="/css/simple-sidebar.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.css" rel="stylesheet">
 
     <style>
@@ -63,7 +62,7 @@
     <script src="/js/vendor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.js"></script>
 
-    <script>
+    <script type="text/javascript">
     $('#menu-toggle').click(function(e) {
         e.preventDefault();
         $('#wrapper').toggleClass('toggled');

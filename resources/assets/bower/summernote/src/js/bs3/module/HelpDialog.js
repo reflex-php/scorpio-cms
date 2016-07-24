@@ -28,9 +28,9 @@ define([
 
       var body = [
         '<p class="text-center">',
-        '<a href="//summernote.org/" target="_blank">Summernote @VERSION</a> · ',
-        '<a href="//github.com/summernote/summernote" target="_blank">Project</a> · ',
-        '<a href="//github.com/summernote/summernote/issues" target="_blank">Issues</a>',
+        '<a href="http://summernote.org/" target="_blank">Summernote @VERSION</a> · ',
+        '<a href="https://github.com/summernote/summernote" target="_blank">Project</a> · ',
+        '<a href="https://github.com/summernote/summernote/issues" target="_blank">Issues</a>',
         '</p>'
       ].join('');
 
@@ -40,9 +40,9 @@ define([
         body: this.createShortCutList(),
         footer: body,
         callback: function ($node) {
-          $node.find('.modal-body').css({
+          ui.getDialogBody($node).css({
             'max-height': 300,
-            'overflow': 'scroll'
+            'overflow-y': 'auto'
           });
         }
       }).render().appendTo($container);

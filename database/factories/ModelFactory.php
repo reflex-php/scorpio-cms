@@ -1,5 +1,7 @@
 <?php
 
+use Faker\Provider\Base;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -17,19 +19,5 @@ $factory->define(Reflex\Scorpio\User::class, function (Faker\Generator $faker) {
         'email' => $faker->safeEmail,
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
-    ];
-});
-
-$factory->define(Reflex\Scorpio\Page::class, function (Faker\Generator $faker) {
-    return [
-        'title' => $title = $faker->sentence,
-        'slug'  => str_slug($title),
-        'body'  => $faker->paragraph,
-    ];
-});
-
-$factory->define(Reflex\Scorpio\Theme::class, function (Faker\Generator $faker) {
-    return [
-        'name' => $faker->sentence
     ];
 });

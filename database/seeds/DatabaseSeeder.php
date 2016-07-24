@@ -11,6 +11,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(PageTableSeeder::class);
+        $seeders = [UserSeeder::class, ThemeSeeder::class, PageSeeder::class];
+
+        foreach ($seeders as $seeder) {
+            $this->call($seeder);
+        }
     }
 }

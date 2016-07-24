@@ -59,8 +59,8 @@
                             </td>
                         </tr>    
                     @empty
-                        <tr class="table-info">
-                            <td>No Themes</td>
+                        <tr class="info">
+                            <td colspan="4">No Themes</td>
                         </tr>
                     @endforelse
                         </tbody>

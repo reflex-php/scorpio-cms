@@ -41,15 +41,7 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <!-- Will eventually be dynamic -->
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="/awesome">Niiiiice</a>
-                    </li>
-                    <li>
-                        <a href="/vue-modal-4">Vue modal 4</a>
-                    </li>
-                </ul>
+                {!! navigation('main', 'nav navbar-nav navbar-right') !!}
             </div>
             <!-- /.navbar-collapse -->
         </div>
@@ -64,7 +56,6 @@
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
                         <h1>{{ $page->title }}</h1>
-                        {{-- <h2 class="subheading">Problems look mighty small from 150 miles up</h2> --}}
                         <span class="meta">Posted on {{ $page->created_at->toFormattedDateString() }}</span>
                     </div>
                 </div>

@@ -3,7 +3,9 @@
 namespace Reflex\Scorpio\Providers;
 
 use Reflex\Scorpio\Theme;
+use Reflex\Scorpio\Navigation;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
             $disk = Storage::disk('layouts');
 
             if ($disk->exists($theme->path)) {
-                return false;
+                return true;
             }
 
             return File::copyDirectory(
@@ -36,7 +38,13 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Theme::deleting(function (Theme $theme) {
-            return Storage::disk('layouts')->deleteDirectory($theme->path);
+            $disk = Storage::disk('layouts');
+
+            if (! $disk->exists($theme->path)) {
+                return true;
+            }
+
+            return $disk->deleteDirectory($theme->path);
         });
     }
 
